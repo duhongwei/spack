@@ -3,19 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "hotpack": "bin/spack",
+    "hotpack-pro": "bin/spack-pro",
+    "hotpack-dev": "bin/spack-dev"
+  },
   "dependencies": {
-
-    "acorn": "^6.0.2",
-    "acorn-walk": "^6.1.0",
+    "@duhongwei/parser": "^2.1.0",
+    "acorn": "^6.1.0",
+    "acorn-walk": "^6.1.1",
     "buble": "^0.19.6",
     "chalk": "^2.4.1",
+    "clean-css": "^4.2.1",
     "clone": "^2.1.2",
     "commander": "^2.19.0",
-    "koa": "^2.6.1",
-    "koa-static": "^5.0.0",
+    "koa": "^2.7.0",
+    "koa-send": "^5.0.0",
     "metalsmith": "^2.3.0",
-    "react": "^16.6.0",
-    "react-router-dom": "^4.3.1"
+    "uglify-es": "^3.3.9",
+    "vue-template-compiler": "^2.6.7"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -32,11 +38,11 @@
     }
   },
   "devDependencies": {
-    "eslint": "^5.8.0",
+    "eslint": "^5.14.0",
     "mocha": "^5.2.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint ./lib &&eslint ./plugin"
   },
   "keywords": [],
   "author": "",

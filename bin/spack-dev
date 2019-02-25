@@ -1,25 +1,57 @@
 #!/usr/bin/env node
 
-const { app, server } = require('../lib/index')
 const program = require('commander')
-const Logger = require('../lib/logger')
+const App = require('../lib/app')
+const server = require('../lib/server')
 process.env.NODE_ENV = 'development'
+
 program
   .usage('[options]')
-  .option('--no-server', 'no server service')
-  .option('--no-cache', 'ignore file version,rebuild all files')
+  .option('-c,--clean', 'ignore file version,rebuild all files')
+  .option('-d,--directory', 'work directory')
+  .option('-p,--port', 'web server port')
+  .option('--no-server', 'no server')
   .parse(process.argv)
-const logger = new Logger()
-app.setCommander({
-  noCache: program.cache === false
-})
-app.run().then(config => {
-  if (program.server !== false) {
-    const { port, dist } = config
+
+const config = {
+  alias: {
+    'axios': {
+      path: 'dist/axios.js'
+      //publicKey:axios,和key相同可以不写
+    }
+  },
+  clean: false,
+  runtime: ['runtime/hotload.js', 'runtime/debug.js', 'runtime/import.js'],
+  "destination": "dev",
+  directory: process.cwd(),
+  "plugins": {
+    ensureString: true,
+    version: true,
+    vue: true,
+    parser: true,
+    buble: true,
+    compileVue: true,
+    node: true,
+    htmlDev: true
+  }
+}
+if (program.directory) {
+  config.directory = program.directory
+}
+if (program.clean) {
+  config.clean = true
+}
+
+const app = new App('config-dev.js', config)
+
+app.build().then(() => {
+
+  if (program.server) {
     server.init({
-      port,
-      webroot: dist
+      app,
+      port: program.port || 3000
     })
-    logger.log(`server run at port ${port}`)
   }
 })
+
+

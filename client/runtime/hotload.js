@@ -346,6 +346,7 @@
   }
   defineLegoMod();
   global.define = define;
-  global.define.amd = {};
+  //hotload.js并不是完全遵守amd
+  //global.define.amd = {};
   global.require = require;
 })(this);

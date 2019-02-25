@@ -1,4 +1,4 @@
-define('lego.debug', ['lego'], function (lego) {
+define('runtime/debug.js', ['lego'], function (lego) {
   function run() {
     var mod = lego.inspect();
     var hotloadKeys = lego.hotloadKeys

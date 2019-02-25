@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-process.env.SERVER_PLACEHOLDER = '<!--serverString-->'
+//process.env.SERVER_PLACEHOLDER = '<!--serverString-->'
 
 require('commander')
   .version(require('../package').version)
   .usage('<command> [options]')
-  .command('list', 'list available official templates',{ isDefault: true })
+  .command('list', 'list available official templates', { isDefault: true })
   .command('init', 'generate a new project from the template')
   .command('pro', 'production compile')
   .command('dev', 'dev compile')
