@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "hotpack": "bin/spack",
-    "hotpack-pro": "bin/spack-pro",
-    "hotpack-dev": "bin/spack-dev"
+    "spack": "bin/spack",
+    "spack-pro": "bin/spack-pro",
+    "spack-dev": "bin/spack-dev"
   },
   "dependencies": {
     "@duhongwei/parser": "^2.1.0",

@@ -1,11 +1,12 @@
 /**
  * render html with resource
  */
-const { getEntry, render, doDynamic } = require('../lib/html')
+const { getEntry, render, doDynamic, makeSystem } = require('../lib/html')
 const { isHtml } = require('../lib/util')
 const { existsSync } = require('fs')
 const { join } = require('path')
 const debug = require('debug')('hotpack/html')
+const debugJson=require('debug')('hotpack-json/html')
 module.exports = function () {
   return function (files, spack, done) {
     let { dep, runtime, logger, dynamic } = spack
@@ -23,15 +24,27 @@ module.exports = function () {
       }
       let deps = dep.getByEntry(entry)
       let dynamicDeps = doDynamic(deps, dep, dynamic.get())
-      debug(`dynamicDeps are \n${JSON.stringify(dynamicDeps, null, 2)}`)
+      debugJson(`dynamicDeps are \n${JSON.stringify(dynamicDeps, null, 2)}`)
 
       deps = runtime.concat(deps)
-      debug(`deps are \n${JSON.stringify(deps, null, 2)}`)
-      const renderData = deps.map(item => `/${item}`)
-      if (dynamicDeps) {
-        files[file].contents = files[file].contents.replace(`'<%deps%>'`, JSON.stringify(dynamicDeps))
+      if (dynamic.get().length > 0) {
+        deps.push('runtime/import.js')
       }
-      files[file].contents = render(files[file].contents, renderData)
+      let system = makeSystem(dynamicDeps)
+      files[system.key] = { contents: system.contents }
+
+      debugJson(`deps are \n${JSON.stringify(deps, null, 2)}`)
+      const renderData = deps.map(item => `/${item}`)
+      let c = files[file].contents
+
+      c = render(c, renderData)
+      c = c.replace('</body>',
+        `<script>
+          require('runtime/debug.js').run()
+        </script>
+        </body>`
+      )
+      files[file].contents = c
     }
     done()
   }

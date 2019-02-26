@@ -243,6 +243,7 @@
   function dealReady(mod) {
     var shouldDealSub = run(mod);
     if (mod.key in readyMod) {
+      console && console.log(mod.key + ' loaded again')
       if (hotloadKeys.length > 20) {
         hotloadKeys = []
       }

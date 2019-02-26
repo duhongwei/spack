@@ -7,7 +7,7 @@ const { existsSync } = require('fs')
 const { join } = require('path')
 const { extname } = require('path')
 const debug = require('debug')('hotpack/html')
-
+const debugJson=require('debug')('hotpack-json/html')
 function getCdnDeps({ packagedDeps, version, cdn }) {
   return packagedDeps.reduce((result, items) => {
     const hashs = items.map(item => {
@@ -25,7 +25,7 @@ function getCdnDeps({ packagedDeps, version, cdn }) {
 module.exports = function () {
 
   return function (files, spack, done) {
-    let { dep, runtime, logger,  version, cdn, dynamic } = spack
+    let { dep, runtime, logger, version, cdn, dynamic } = spack
     const src = spack.source()
     logger.log('run plugin html')
 
@@ -41,27 +41,44 @@ module.exports = function () {
       }
       //保证runtime在最前，这样打包的时候，runtime也会在前面
       let deps = runtime.concat(dep.getByEntry(entry))
-      debug(`deps ars \n${JSON.stringify(deps, null, 2)}`)
+      if (dynamic.get().length > 0) {
+        deps.push('runtime/import.js')
+      }
+      let dynamicDeps = doDynamic(deps, dep, dynamic.get())
+
+      let system = makeSystem(dynamicDeps)
+
+      files[system.key] = { contents: system.contents }
+
+      debugJson(`deps ars \n${JSON.stringify(deps, null, 2)}`)
       let packagedDeps = doPackage(deps, spack.package)
-      debug(`packagedDeps ars \n${JSON.stringify(packagedDeps, null, 2)}`)
+      debugJson(`packagedDeps ars \n${JSON.stringify(packagedDeps, null, 2)}`)
       let cdnDeps = getCdnDeps({ packagedDeps, version, cdn })
-      debug(`cdnDeps are \n${JSON.stringify(cdnDeps, null, 2)}`)
+      debugJson(`cdnDeps are \n${JSON.stringify(cdnDeps, null, 2)}`)
       files[file].contents = render(files[file].contents, cdnDeps)
 
-      let dynamicDeps = doDynamic(deps, dep, dynamic.get())
-      debug(`dynamicDeps ars \n${JSON.stringify(dynamicDeps, null, 2)}`)
+
+      debugJson(`dynamicDeps ars \n${JSON.stringify(dynamicDeps, null, 2)}`)
       if (dynamicDeps) {
         let packagedDynamicDeps = {}
         for (const key in dynamicDeps) {
           packagedDynamicDeps[key] = doPackage(dynamicDeps[key], [])
         }
-        debug(`packagedDynamicDeps ars \n${JSON.stringify(packagedDynamicDeps, null, 2)}`)
+        debugJson(`packagedDynamicDeps ars \n${JSON.stringify(packagedDynamicDeps, null, 2)}`)
         let cdnDynamicDeps = {}
         for (const key in packagedDynamicDeps) {
           cdnDynamicDeps[key] = getCdnDeps({ packagedDeps: packagedDynamicDeps[key], version, cdn })
         }
-        debug(`cdnDynamicDeps are \n${JSON.stringify(cdnDynamicDeps, null, 2)}`)
-        files[file].contents = files[file].contents.replace(`'<%deps%>'`, JSON.stringify(cdnDynamicDeps))
+        debugJson(`cdnDynamicDeps are \n${JSON.stringify(cdnDynamicDeps, null, 2)}`)
+
+        if (dynamicDeps) {
+          files[file].contents = files[file].contents.replace('</head>', `
+          <script>
+            window._dynamic_deps_=${JSON.stringify(dynamicDeps)}
+          </script>
+          </head>
+          `)
+        }
       }
     }
     done()

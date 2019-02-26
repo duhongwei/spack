@@ -21,7 +21,7 @@ const config = {
     }
   },
   clean: false,
-  runtime: ['runtime/hotload.js', 'runtime/debug.js', 'runtime/import.js'],
+  runtime: ['runtime/hotload.js', 'runtime/debug.js'],
   "destination": "dev",
   directory: process.cwd(),
   "plugins": {
