@@ -55,7 +55,7 @@
           logger.log(e);
         }
       }
-      mod.funed = mod.fun.apply(thisOwner, funed);
+      mod.funed = mod.fun.apply(thisOwner || window, funed);
       setDepKeys(mod);
 
       if (thisOwner && thisOwner.load) {

@@ -18,6 +18,15 @@ const config = {
     'axios': {
       path: 'dist/axios.js'
       //publicKey:axios,和key相同可以不写
+    },
+    'react-dom': {
+      path: 'umd/react-dom.development.js',
+      publicKey:'ReactDOM',
+      deps: ['react']
+    },
+    'react': {
+      path: 'umd/react.development.js',
+      publicKey:'React'
     }
   },
   clean: false,
@@ -28,8 +37,8 @@ const config = {
     ensureString: true,
     version: true,
     vue: true,
-    parser: true,
     buble: true,
+    parser: true,
     compileVue: true,
     node: true,
     htmlDev: true

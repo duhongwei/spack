@@ -1,5 +1,5 @@
-define('runtime/import.js', ['runtime/system.js'], function (system) {
-  var deps = system.dynamicDeps
+define('runtime/import.js', function (system) {
+  var deps = window._dynamic_deps_
   var doc = document
 
   function load(key) {

@@ -8,11 +8,11 @@ function getHtml(file, files) {
   delete files[file]
   return result
 }
-function replaceHtml(js, html,logger) {
+function replaceHtml(js, html, logger, file) {
   let compiled = compiler.compile(html)
-  if (compiled.errors.length>0) {
+  if (compiled.errors.length > 0) {
     console.log(compiled.errors)
-    logger.fatal('compile vue template error')
+    logger.fatal(`compile vue template ${file} error`)
     process.exit(1)
   }
 
@@ -34,7 +34,7 @@ module.exports = function () {
 
       let jsContent = files[file].contents
 
-      files[file].contents = replaceHtml(jsContent, html,logger)
+      files[file].contents = replaceHtml(jsContent, html, logger, file)
       //console.log(files[file].contents)
     }
   }

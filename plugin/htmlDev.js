@@ -1,12 +1,12 @@
 /**
  * render html with resource
  */
-const { getEntry, render, doDynamic, makeSystem } = require('../lib/html')
+const { getEntry, render, doDynamic} = require('../lib/html')
 const { isHtml } = require('../lib/util')
 const { existsSync } = require('fs')
 const { join } = require('path')
 const debug = require('debug')('hotpack/html')
-const debugJson=require('debug')('hotpack-json/html')
+const debugJson = require('debug')('hotpack-json/html')
 module.exports = function () {
   return function (files, spack, done) {
     let { dep, runtime, logger, dynamic } = spack
@@ -30,17 +30,22 @@ module.exports = function () {
       if (dynamic.get().length > 0) {
         deps.push('runtime/import.js')
       }
-      let system = makeSystem(dynamicDeps)
-      files[system.key] = { contents: system.contents }
 
       debugJson(`deps are \n${JSON.stringify(deps, null, 2)}`)
       const renderData = deps.map(item => `/${item}`)
       let c = files[file].contents
 
       c = render(c, renderData)
+      c = c.replace('</head>', `
+       <script>
+         window._dynamic_deps_=${dynamicDeps};
+         window._env_='development';
+       </script>
+       </head>
+      `)
       c = c.replace('</body>',
         `<script>
-          require('runtime/debug.js').run()
+          require('runtime/debug.js').run();
         </script>
         </body>`
       )

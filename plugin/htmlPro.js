@@ -7,10 +7,13 @@ const { existsSync } = require('fs')
 const { join } = require('path')
 const { extname } = require('path')
 const debug = require('debug')('hotpack/html')
-const debugJson=require('debug')('hotpack-json/html')
+const debugJson = require('debug')('hotpack-json/html')
 function getCdnDeps({ packagedDeps, version, cdn }) {
+
   return packagedDeps.reduce((result, items) => {
+
     const hashs = items.map(item => {
+
       return version.get(item).url.split('/').pop().split('.')[0]
     })
     if (cdn.makeFile) {
@@ -46,13 +49,12 @@ module.exports = function () {
       }
       let dynamicDeps = doDynamic(deps, dep, dynamic.get())
 
-      let system = makeSystem(dynamicDeps)
 
-      files[system.key] = { contents: system.contents }
 
       debugJson(`deps ars \n${JSON.stringify(deps, null, 2)}`)
       let packagedDeps = doPackage(deps, spack.package)
-      debugJson(`packagedDeps ars \n${JSON.stringify(packagedDeps, null, 2)}`)
+      debugJson(`spack.package are \n${JSON.stringify(spack.package, null, 2)}`)
+      debugJson(`packagedDeps are \n${JSON.stringify(packagedDeps, null, 2)}`)
       let cdnDeps = getCdnDeps({ packagedDeps, version, cdn })
       debugJson(`cdnDeps are \n${JSON.stringify(cdnDeps, null, 2)}`)
       files[file].contents = render(files[file].contents, cdnDeps)
@@ -71,14 +73,12 @@ module.exports = function () {
         }
         debugJson(`cdnDynamicDeps are \n${JSON.stringify(cdnDynamicDeps, null, 2)}`)
 
-        if (dynamicDeps) {
-          files[file].contents = files[file].contents.replace('</head>', `
+        files[file].contents = files[file].contents.replace('</head>', `
           <script>
-            window._dynamic_deps_=${JSON.stringify(dynamicDeps)}
+            window._dynamic_deps_=${dynamicDeps}
           </script>
           </head>
           `)
-        }
       }
     }
     done()
