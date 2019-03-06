@@ -1,15 +1,15 @@
 /**
  * render html with resource
  */
-const { getEntry, render, doDynamic} = require('../lib/html')
+const { render, doDynamic } = require('../lib/html')
 const { isHtml } = require('../lib/util')
 const { existsSync } = require('fs')
 const { join } = require('path')
 const debug = require('debug')('hotpack/html')
 const debugJson = require('debug')('hotpack-json/html')
-module.exports = function () {
+module.exports = function (opts = {}) {
   return function (files, spack, done) {
-    let { dep, runtime, logger, dynamic } = spack
+    let { dep, runtime, logger, dynamic, transformPageKey, getEntry } = spack
     const src = spack.source()
     logger.log('run plugin html')
     for (let file in files) {
@@ -20,7 +20,8 @@ module.exports = function () {
 
       let entry = getEntry(file)
       if (!existsSync(join(src, entry))) {
-        throw new Error(entry + ' not exist!')
+        spack.logger.info(`entry ${entry} not exsit, render ${file} directly`)
+        continue
       }
       let deps = dep.getByEntry(entry)
       let dynamicDeps = doDynamic(deps, dep, dynamic.get())
@@ -49,8 +50,16 @@ module.exports = function () {
         </script>
         </body>`
       )
+      if (opts.file) {
+        file = opts.file
+      }
       files[file].contents = c
+      files[transformPageKey(file)] = files[file]
+
+      delete files[file]
+
     }
+
     done()
   }
 }

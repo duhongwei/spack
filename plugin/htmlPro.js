@@ -28,7 +28,7 @@ function getCdnDeps({ packagedDeps, version, cdn }) {
 module.exports = function () {
 
   return function (files, spack, done) {
-    let { dep, runtime, logger, version, cdn, dynamic } = spack
+    let { dep, runtime, logger, version, cdn, dynamic, transformPageKey } = spack
     const src = spack.source()
     logger.log('run plugin html')
 
@@ -80,6 +80,8 @@ module.exports = function () {
           </head>
           `)
       }
+      files[transformPageKey(file)] = files[file]
+      delete files[file]
     }
     done()
   }

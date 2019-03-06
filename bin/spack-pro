@@ -12,42 +12,7 @@ program
   .option('-s,--server', 'web server')
   .parse(process.argv)
 
-const config = {
-  //umd alias path
-  alias: {
-    'axios': {
-      path: 'dist/axios.js'
-      //publicKey:axios,和key相同可以不写
-    },
-    'react-dom': {
-      path: 'umd/react-dom.development.js',
-      publicKey:'ReactDOM',
-      deps: ['react']
-    },
-    'react': {
-      path: 'umd/react.development.js',
-      publicKey:'React'
-    }
-  },
-  clean: false,
-  runtime: ['runtime/hotload.js'],
-  destination: "dist",
-  directory: process.cwd(),
-  plugins: {
-    ensureString: true,
-    image: true,
-    version: true,
-    vue: true,
-    buble: true,
-    parser: true,
-    compileVue: true,
-    node: true,
-    compress: true,
-    upload: true,
-    htmlPro: true
-  },
-  package: []
-}
+let config = {}
 if (program.directory) {
   config.directory = program.directory
 }
@@ -55,7 +20,7 @@ if (program.clean) {
   config.clean = true
 }
 
-const app = new App('config-pro.js', config)
+const app = new App(config)
 app.build().then(() => {
   if (program.server) {
     server.init({
