@@ -9,7 +9,10 @@ module.exports = function () {
       if (isHtml(file)) {
         continue
       }
-     
+      if (files[file].contents.trim() === '') { 
+        logger.fatal(`${file} is empty`)
+        process.exit(1)
+      }
       if (version.update(file, files[file].contents)) {
         debug(`${file} updated`)
       }

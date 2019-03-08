@@ -1,5 +1,6 @@
 
 const { extname } = require('path')
+const {isMin}=require('../lib/util')
 const debug = require('debug')('hotpack/compress')
 module.exports = function () {
   let jsProvider = require('uglify-es')
@@ -8,6 +9,9 @@ module.exports = function () {
     logger.log('run plugin compress')
     for (let file in files) {
       let result = ''
+      if (isMin(file)) {
+        continue
+      }
       switch (extname(file)) {
         case '.js':
           debug(`compress ${file}`)

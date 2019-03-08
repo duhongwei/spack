@@ -16,10 +16,12 @@ module.exports = function (opts = {}) {
       if (!isHtml(file)) {
         continue
       }
-      debug(`build ${file}`)
+      const renderFile = transformPageKey(file)
 
       let entry = getEntry(file)
       if (!existsSync(join(src, entry))) {
+        files[renderFile] = files[file]
+        delete files[file]
         spack.logger.info(`entry ${entry} not exsit, render ${file} directly`)
         continue
       }
@@ -28,10 +30,10 @@ module.exports = function (opts = {}) {
       debugJson(`dynamicDeps are \n${JSON.stringify(dynamicDeps, null, 2)}`)
 
       deps = runtime.concat(deps)
-      if (dynamic.get().length > 0) {
+     /*  if (dynamic.get().length > 0) {
         deps.push('runtime/import.js')
       }
-
+ */
       debugJson(`deps are \n${JSON.stringify(deps, null, 2)}`)
       const renderData = deps.map(item => `/${item}`)
       let c = files[file].contents
@@ -54,9 +56,9 @@ module.exports = function (opts = {}) {
         file = opts.file
       }
       files[file].contents = c
-      files[transformPageKey(file)] = files[file]
-
+      files[renderFile] = files[file]
       delete files[file]
+      debug(`build ${file},www file is ${renderFile}`)
 
     }
 

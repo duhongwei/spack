@@ -44,9 +44,9 @@ module.exports = function () {
       }
       //保证runtime在最前，这样打包的时候，runtime也会在前面
       let deps = runtime.concat(dep.getByEntry(entry))
-      if (dynamic.get().length > 0) {
-        deps.push('runtime/import.js')
-      }
+      /*  if (dynamic.get().length > 0) {
+         deps.push('runtime/import.js')
+       } */
       let dynamicDeps = doDynamic(deps, dep, dynamic.get())
 
 
