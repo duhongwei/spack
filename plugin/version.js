@@ -1,15 +1,15 @@
 
 const debug = require('debug')('hotpack/version')
-const { isHtml } = require('../lib/util')
+const { isHtml, isText } = require('../lib/util')
 module.exports = function () {
   return function (files, { version, logger }) {
     logger.log('run plugin version')
-  
+
     for (let file in files) {
       if (isHtml(file)) {
         continue
       }
-      if (files[file].contents.trim() === '') { 
+      if (isText(file) && files[file].contents.trim() === '') {
         logger.fatal(`${file} is empty`)
         process.exit(1)
       }
