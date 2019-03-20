@@ -12,6 +12,9 @@ function getCdnDeps({ packagedDeps, version, cdn }) {
 
   return packagedDeps.reduce((result, items) => {
 
+    if (items.length === 0) {
+      return []
+    }
     const hashs = items.map(item => {
 
       return version.get(item).url.split('/').pop().split('.')[0]
@@ -20,6 +23,7 @@ function getCdnDeps({ packagedDeps, version, cdn }) {
       debug(`makefile ${items.join(',')}`)
       cdn.makeFile(hashs, extname(items[0]))
     }
+
     result.push(cdn.getUrl(hashs, extname(items[0])))
     return result
   }, [])
@@ -51,9 +55,10 @@ module.exports = function () {
 
 
 
-      debugJson(`deps ars \n${JSON.stringify(deps, null, 2)}`)
-      let packagedDeps = doPackage(deps, spack.package)
-      debugJson(`spack.package are \n${JSON.stringify(spack.package, null, 2)}`)
+      debugJson(`deps are \n${JSON.stringify(deps, null, 2)}`)
+      debugJson(`packages are \n${JSON.stringify(spack.packages, null, 2)}`)
+      let packagedDeps = doPackage(deps, spack.packages)
+
       debugJson(`packagedDeps are \n${JSON.stringify(packagedDeps, null, 2)}`)
       let cdnDeps = getCdnDeps({ packagedDeps, version, cdn })
       debugJson(`cdnDeps are \n${JSON.stringify(cdnDeps, null, 2)}`)
@@ -61,11 +66,15 @@ module.exports = function () {
 
 
       debugJson(`dynamicDeps ars \n${JSON.stringify(dynamicDeps, null, 2)}`)
+
       if (dynamicDeps) {
+
         let packagedDynamicDeps = {}
         for (const key in dynamicDeps) {
+
           packagedDynamicDeps[key] = doPackage(dynamicDeps[key], [])
         }
+
         debugJson(`packagedDynamicDeps ars \n${JSON.stringify(packagedDynamicDeps, null, 2)}`)
         let cdnDynamicDeps = {}
         for (const key in packagedDynamicDeps) {
@@ -75,13 +84,18 @@ module.exports = function () {
 
         files[file].contents = files[file].contents.replace('</head>', `
           <script>
-            window._dynamic_deps_=${dynamicDeps}
+            window._dynamic_deps_=${JSON.stringify(cdnDynamicDeps)}
           </script>
           </head>
           `)
       }
-      files[transformPageKey(file)] = files[file]
-      delete files[file]
+      let renderFile = transformPageKey(file)
+      files[renderFile] = files[file]
+
+      if (file !== renderFile) {
+        delete files[file]
+      }
+
     }
     done()
   }

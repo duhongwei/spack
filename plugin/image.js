@@ -30,7 +30,7 @@ module.exports = function () {
         //.必须用 \\.
         textFiles[textFile].contents = textFiles[textFile].contents.replace(new RegExp(`${sep}${img}${sep}[^.]+\\.(jpg|jpeg|png|gif|webp|svg)`, 'ig'), path => {
           debug(`replace img ${textFile} ${path} => ${version.get(path).url}`)
-
+         
           return version.get(path).url
         })
 

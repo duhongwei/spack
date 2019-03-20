@@ -30,10 +30,10 @@ module.exports = function (opts = {}) {
       debugJson(`dynamicDeps are \n${JSON.stringify(dynamicDeps, null, 2)}`)
 
       deps = runtime.concat(deps)
-     /*  if (dynamic.get().length > 0) {
-        deps.push('runtime/import.js')
-      }
- */
+      /*  if (dynamic.get().length > 0) {
+         deps.push('runtime/import.js')
+       }
+  */
       debugJson(`deps are \n${JSON.stringify(deps, null, 2)}`)
       const renderData = deps.map(item => `/${item}`)
       let c = files[file].contents
@@ -41,7 +41,7 @@ module.exports = function (opts = {}) {
       c = render(c, renderData)
       c = c.replace('</head>', `
        <script>
-         window._dynamic_deps_=${dynamicDeps};
+         window._dynamic_deps_=${JSON.stringify(dynamicDeps)};
          window._env_='development';
        </script>
        </head>
@@ -57,7 +57,10 @@ module.exports = function (opts = {}) {
       }
       files[file].contents = c
       files[renderFile] = files[file]
-      delete files[file]
+      if (file !== renderFile) {
+        delete files[file]
+      }
+
       debug(`build ${file},www file is ${renderFile}`)
 
     }
