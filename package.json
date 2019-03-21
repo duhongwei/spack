@@ -1,15 +1,15 @@
 {
-  "name": "spack",
-  "version": "1.0.0",
+  "name": "@q/hotpack",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "bin": {
-    "spack": "bin/spack",
-    "spack-pro": "bin/spack-pro",
-    "spack-dev": "bin/spack-dev"
+    "hotpack": "bin/spack",
+    "hotpack-pro": "bin/spack-pro",
+    "hotpack-dev": "bin/spack-dev"
   },
   "dependencies": {
-    "@duhongwei/parser": "^2.1.0",
+    "@q/parser": "^2.1.1",
     "acorn": "^6.1.0",
     "acorn-walk": "^6.1.1",
     "buble": "^0.19.6",
@@ -41,6 +41,12 @@
     "eslint": "^5.14.0",
     "mocha": "^5.2.0"
   },
+  "maintainers": [
+    {
+      "name": "duhongwei",
+      "email": "duhongwei@360.cn"
+    }
+  ],
   "scripts": {
     "test": "eslint ./lib &&eslint ./plugin"
   },
