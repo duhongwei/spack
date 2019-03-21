@@ -31,7 +31,7 @@ module.exports = function () {
       }
       const toAmd = new ToAmd(info, file)
       files[file].contents = toAmd.toString()
-     
+
       dep.set(file, toAmd.getDeps())
     }
   }

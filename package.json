@@ -1,15 +1,15 @@
 {
-  "name": "@q/hotpack",
-  "version": "1.0.2",
+  "name": "spack",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "bin": {
-    "hotpack": "bin/spack",
-    "hotpack-pro": "bin/spack-pro",
-    "hotpack-dev": "bin/spack-dev"
+    "spack": "bin/spack",
+    "spack-pro": "bin/spack-pro",
+    "spack-dev": "bin/spack-dev"
   },
   "dependencies": {
-    "@q/parser": "^2.1.1",
+    "@duhongwei/parser": "^2.1.0",
     "acorn": "^6.1.0",
     "acorn-walk": "^6.1.1",
     "buble": "^0.19.6",
@@ -17,11 +17,12 @@
     "clean-css": "^4.2.1",
     "clone": "^2.1.2",
     "commander": "^2.19.0",
+    "js-tokens": "^4.0.0",
     "koa": "^2.7.0",
     "koa-send": "^5.0.0",
     "metalsmith": "^2.3.0",
     "uglify-es": "^3.3.9",
-    "vue-template-compiler": "^2.6.8"
+    "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
