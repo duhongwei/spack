@@ -27,6 +27,11 @@ module.exports = function (opts = {}) {
       }
       let deps = dep.getByEntry(entry)
       let dynamicDeps = doDynamic(deps, dep, dynamic.get())
+
+      //把 key 转为绝对路径
+      for (const key in dynamicDeps) {
+        dynamicDeps[key] = dynamicDeps[key].map(item => `/${item}`)
+      }
       debugJson(`dynamicDeps are \n${JSON.stringify(dynamicDeps, null, 2)}`)
 
       deps = runtime.concat(deps)
