@@ -8,9 +8,6 @@
     "spack-pro": "bin/spack-pro",
     "spack-dev": "bin/spack-dev"
   },
-  "browserslist": [
-    "Chrome 42"
-  ],
   "dependencies": {
     "@duhongwei/parser": "^2.1.0",
     "acorn": "^6.1.0",
