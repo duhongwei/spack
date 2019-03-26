@@ -8,10 +8,14 @@
     "spack-pro": "bin/spack-pro",
     "spack-dev": "bin/spack-dev"
   },
+  "browserslist": [
+    "Chrome 42"
+  ],
   "dependencies": {
     "@duhongwei/parser": "^2.1.0",
     "acorn": "^6.1.0",
     "acorn-walk": "^6.1.1",
+    "autoprefixer": "^9.5.0",
     "buble": "^0.19.6",
     "chalk": "^2.4.1",
     "clean-css": "^4.2.1",

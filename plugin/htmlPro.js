@@ -16,7 +16,7 @@ function getCdnDeps({ packagedDeps, version, cdn }) {
       return []
     }
     const hashs = items.map(item => {
-
+    
       return version.get(item).url.split('/').pop().split('.')[0]
     })
     if (cdn.makeFile) {
