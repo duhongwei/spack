@@ -1,8 +1,19 @@
-const path = require('path')
+/** 
+ * 参数参见 https://github.com/postcss/postcss/blob/master/README-cn.md 
+ * https://github.com/postcss/autoprefixer,https://github.com/browserslist/browserslist-example
+ * https://github.com/browserslist/browserslist
+ * npx browserlist来查看设置有没有生效
+*/
+
 const { isCss } = require('../lib/util')
 const debug = require('debug')('hotpack/postcss')
 const postcss = require('postcss')
+const autoprefixer = require('autoprefixer')
+
 module.exports = function (opts) {
+  //先直接赋值，想自定义以后再说
+  opts = [autoprefixer]
+
   //从项目中获取postCSS
   /* let postcss = null
   try {

@@ -9,14 +9,15 @@ const debug = require('debug')('hotpack/html')
 const debugJson = require('debug')('hotpack-json/html')
 module.exports = function (opts = {}) {
   return function (files, spack, done) {
-    let { dep, runtime, logger, dynamic, transformPageKey, getEntry } = spack
+    let { dep, runtime, logger, dynamic, getEntry } = spack
     const src = spack.source()
     logger.log('run plugin html')
     for (let file in files) {
       if (!isHtml(file)) {
         continue
       }
-      const renderFile = transformPageKey(file)
+      //const renderFile = transformPageKey(file)
+      const renderFile = file
 
       let entry = getEntry(file)
       if (!existsSync(join(src, entry))) {

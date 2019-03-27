@@ -11,6 +11,7 @@ program
   .option('-d,--directory', 'work directory')
   .option('-p,--port', 'web server port')
   .option('--no-server', 'no server')
+  .option('-f,--folder', 'config folder')
   .parse(process.argv)
 
 const config = {}
@@ -20,8 +21,11 @@ if (program.directory) {
 if (program.clean) {
   config.clean = true
 }
+if (program.folder) {
+  config.folder = folder
+}
 
-const app = new App( config)
+const app = new App(config)
 
 app.build().then(() => {
 

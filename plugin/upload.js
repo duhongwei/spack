@@ -4,7 +4,7 @@
  */
 const { isJs, isCss } = require('../lib/util')
 const { extname } = require('path')
-const debug= require('debug')('hotpack/upload')
+const debug = require('debug')('hotpack/upload')
 module.exports = function () {
   return function (files, { version, cdn, logger }, done) {
     logger.log('run plugin upload')
@@ -13,13 +13,14 @@ module.exports = function () {
       if (!isJs(file) && !isCss(file)) {
         continue
       }
-      
+    
       PromiseList.push(cdn.upload(files[file].contents, extname(file), { https: true }).then(url => {
         debug(`upload ${file} =>  ${url}`)
         delete files[file]
         version.setUrl(file, url)
       }, (d) => {
-        throw new Error(file + ',' + d.message)
+        logger.fatal(`${file} , ${d.message}`)
+        process.exit(1);
       }))
     }
     Promise.all(PromiseList).then(() => {
