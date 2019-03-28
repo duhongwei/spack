@@ -10,7 +10,7 @@ program
   .option('-c,--clean', 'ignore file version,rebuild all files')
   .option('-d,--directory', 'work directory')
   .option('-p,--port', 'web server port')
-  .option('--no-server', 'no server')
+  .option('-s --server', 'server without')
   .option('-f,--folder [folder]', 'config folder')
   .parse(process.argv)
 
@@ -29,7 +29,7 @@ const app = new App(config)
 
 app.build().then(() => {
 
-  if (program.server) {
+  if (!program.server) {
     server.init({
       app,
       port: program.port || 3000
