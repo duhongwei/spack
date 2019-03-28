@@ -1,10 +1,10 @@
 const debug = require('debug')('hotpack/include')
-const { join } = require('path')
+const { join, dirname } = require('path')
 const fs = require('fs')
-module.exports = function ({ includeRoot }) {
-  
+module.exports = function () {
+
   return function (files, spack) {
-    includeRoot = includeRoot || join(spack.directory(), 'include')
+
     spack.logger.log('run plugin include')
     for (let file in files) {
       if (!/\.html$/.test(file)) {
@@ -12,11 +12,17 @@ module.exports = function ({ includeRoot }) {
       }
       let c = files[file].contents
       c = c.replace(/\binclude\(([^)]+)\)/g, (match, p1) => {
-       
-        let path = join(includeRoot, p1)
+        let path = null
+        if (p1.startsWith('/')) {
+          path = join(spack.source(), p1.substr(1))
+        }
+        else {
+          path = join(spack.source(), dirname(file), p1)
+        }
         debug(`include ${p1}: ${path} in ${file}`)
         return fs.readFileSync(path, 'utf8')
       })
+
       files[file].contents = c
     }
   }
