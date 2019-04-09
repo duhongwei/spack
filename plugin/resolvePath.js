@@ -9,7 +9,8 @@ module.exports = function () {
         continue
       }
       let c = files[file].contents
-      c = c.replace(/\bresolvePath\(['"]?([^)]+)['"]?\)/g, (match, p1) => {
+      c = c.replace(/\bresolvePath\(([^)]+)\)/g, (match, p1) => {
+        p1 = p1.replace(/"/g, '')
         if (!/^[/.]/.test(p1)) {
           throw new Error(`page path ${p1} must start with . or /`)
         }
