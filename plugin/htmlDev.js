@@ -16,8 +16,8 @@ module.exports = function (opts = {}) {
       if (!isHtml(file)) {
         continue
       }
-      //const renderFile = transformPageKey(file)
-      const renderFile = file
+      const renderFile = transformPageKey(file)
+
       let entry = getEntry(file)
       if (!existsSync(join(src, entry))) {
         files[renderFile] = files[file]

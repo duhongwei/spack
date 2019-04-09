@@ -26,8 +26,9 @@ module.exports = function () {
         version.setUrl(file, url)
       }))
     }
-
-    let reg = /(\.{1,2}\/|\/)image\/[^.]+\.(jpg|jpeg|png|gif|webp|svg|eot|ttf|woff|woff2|etf|mp3|mp4|mpeg)/ig
+    //warring: 如果在路径的名称中有 . 这个正则就失败了，先不考虑这个。非严谨匹配，为了简化
+    //匹配 ../image ./image /image /pages/开头的，.jpg等图片格式结尾的地址
+    let reg = /(\.{0,2}\/image|\/pages)\/[^.]+\.(jpg|jpeg|png|gif|webp|svg|eot|ttf|woff|woff2|etf|mp3|mp4|mpeg)/ig
 
     Promise.all(PromiseList).then(() => {
 
