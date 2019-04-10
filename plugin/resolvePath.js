@@ -10,13 +10,17 @@ module.exports = function () {
       }
       let c = files[file].contents
       c = c.replace(/\bresolvePath\(([^)]+)\)/g, (match, p1) => {
-        p1 = p1.replace(/"/g, '')
+        let quote = ''
+        if (/['"]/.test(p1[0])) {
+          quote = p1[0]
+        }
+        p1 = p1.replace(/['"]/g, '')
         if (!/^[/.]/.test(p1)) {
           throw new Error(`page path ${p1} must start with . or /`)
         }
         let path = resolveES6Path(file, p1)
         debug(`resolvePath ${p1} => ${path} in ${file}`)
-        return `"/${path}"`
+        return `${quote}/${path}${quote}`
       })
       files[file].contents = c
     }

@@ -22,7 +22,7 @@ module.exports = function (opts = {}) {
       if (!existsSync(join(src, entry))) {
         files[renderFile] = files[file]
         delete files[file]
-        spack.logger.info(`entry ${entry} not exsit, render ${file} directly`)
+        debug(`entry ${entry} not exsit, render ${file} directly`)
         continue
       }
       let deps = dep.getByEntry(entry)

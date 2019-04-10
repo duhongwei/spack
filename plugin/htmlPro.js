@@ -16,7 +16,7 @@ function getCdnDeps({ packagedDeps, version, cdn }) {
       return []
     }
     const hashs = items.map(item => {
-    
+
       return version.get(item).url.split('/').pop().split('.')[0]
     })
     if (cdn.makeFile) {
@@ -43,8 +43,12 @@ module.exports = function () {
       }
       debug(`build html ${file}`)
       let entry = getEntry(file)
+      let renderFile = transformPageKey(file)
       if (!existsSync(join(src, entry))) {
-        throw new Error(entry + ' not exist!')
+        files[renderFile] = files[file]
+        delete files[file]
+        debug(`entry ${entry} not exsit, render ${file} directly`)
+        continue
       }
       //保证runtime在最前，这样打包的时候，runtime也会在前面
       let deps = runtime.concat(dep.getByEntry(entry))
@@ -89,7 +93,7 @@ module.exports = function () {
           </head>
           `)
       }
-      let renderFile = transformPageKey(file)
+
       files[renderFile] = files[file]
 
       if (file !== renderFile) {
