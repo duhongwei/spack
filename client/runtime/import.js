@@ -10,10 +10,10 @@ define('runtime/import.js', function (system) {
     }
     var list = []
     for (var i = 0; i < deps.length; i++) {
-      if (deps[i].endsWith('.js')) {
+      if (/\.js$/.test(deps[i])) {
         list.push(loadScriptItem(deps[i]))
       }
-      if (deps[i].endsWith('.css')) {
+      if (/\.css$/.test(deps[i])) {
         list.push(loadStyleItem(deps[i]))
       }
     }

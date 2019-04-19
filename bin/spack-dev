@@ -9,7 +9,7 @@ program
   .usage('[options]')
   .option('-c,--clean', 'ignore file version,rebuild all files')
   .option('-d,--directory', 'work directory')
-  .option('-p,--port', 'web server port')
+  .option('-p,--port [port]', 'web server port')
   .option('-s --server', 'server without')
   .option('-f,--folder [folder]', 'config folder')
   .parse(process.argv)
