@@ -32,7 +32,7 @@ function getCdnDeps({ packagedDeps, version, cdn }) {
 module.exports = function () {
 
   return function (files, spack, done) {
-    let { dep, runtime, logger, version, cdn, dynamic, transformPageKey } = spack
+    let { dep, runtime, logger, version, cdn, dynamic } = spack
     const src = spack.source()
     logger.log('run plugin html')
 
@@ -43,10 +43,7 @@ module.exports = function () {
       }
       debug(`build html ${file}`)
       let entry = getEntry(file)
-      let renderFile = transformPageKey(file)
       if (!existsSync(join(src, entry))) {
-        files[renderFile] = files[file]
-        delete files[file]
         debug(`entry ${entry} not exsit, render ${file} directly`)
         continue
       }
@@ -93,13 +90,6 @@ module.exports = function () {
           </head>
           `)
       }
-
-      files[renderFile] = files[file]
-
-      if (file !== renderFile) {
-        delete files[file]
-      }
-
     }
     done()
   }

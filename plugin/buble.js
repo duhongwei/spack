@@ -1,11 +1,16 @@
 const buble = require('buble')
 const { isJs } = require('../lib/util')
-const debug =require('debug')('hotpack/buble')
-module.exports = function () {
+const debug = require('debug')('hotpack/buble')
+module.exports = function ({ omitFiles = [] } = {}) {
   return function (files, { logger }, done) {
     logger.log('run plugin buble')
     for (let file in files) {
       if (!isJs(file)) {
+        continue
+      }
+
+      if (omitFiles.includes(file)) {
+        debug(`omit buble ${file}`)
         continue
       }
       debug(`buble ${file}`)

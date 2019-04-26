@@ -9,19 +9,18 @@ const debug = require('debug')('hotpack/html')
 const debugJson = require('debug')('hotpack-json/html')
 module.exports = function (opts = {}) {
   return function (files, spack, done) {
-    let { dep, runtime, logger, dynamic, getEntry, transformPageKey } = spack
+    let { dep, runtime, logger, dynamic, getEntry } = spack
     const src = spack.source()
     logger.log('run plugin html')
     for (let file in files) {
       if (!isHtml(file)) {
         continue
       }
-      const renderFile = transformPageKey(file)
+    
 
       let entry = getEntry(file)
       if (!existsSync(join(src, entry))) {
-        files[renderFile] = files[file]
-        delete files[file]
+      
         debug(`entry ${entry} not exsit, render ${file} directly`)
         continue
       }
@@ -61,15 +60,10 @@ module.exports = function (opts = {}) {
         file = opts.file
       }
       files[file].contents = c
-      files[renderFile] = files[file]
-      if (file !== renderFile) {
-        delete files[file]
-      }
-
-      debug(`build ${file},www file is ${renderFile}`)
-
+      
+     
+      debug(`build ${file}`)
     }
-
     done()
   }
 }
