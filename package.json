@@ -10,10 +10,8 @@
   },
   "dependencies": {
     "@duhongwei/parser": "^2.1.0",
-    "acorn": "^6.1.0",
-    "acorn-walk": "^6.1.1",
     "autoprefixer": "^9.5.0",
-    "buble": "^0.19.6",
+    "buble": "^0.19.7",
     "chalk": "^2.4.1",
     "clean-css": "^4.2.1",
     "clone": "^2.1.2",
@@ -22,7 +20,6 @@
     "koa": "^2.7.0",
     "koa-send": "^5.0.0",
     "metalsmith": "^2.3.0",
-   
     "uglify-es": "^3.3.9",
     "vue-template-compiler": "^2.6.10"
   },
@@ -55,5 +52,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }

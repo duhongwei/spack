@@ -25,6 +25,7 @@ module.exports = function ({ omitFiles = [] } = {}) {
           "node": 8
         }
       } */
+   
       files[file].contents = buble.transform(files[file].contents, opts).code
     }
     done()

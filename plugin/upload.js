@@ -13,8 +13,8 @@ module.exports = function () {
       if (!isJs(file) && !isCss(file)) {
         continue
       }
-    
-      PromiseList.push(cdn.upload(files[file].contents, extname(file), { https: true }).then(url => {
+
+      PromiseList.push(cdn.upload(files[file].contents, extname(file), { file }).then(url => {
         debug(`upload ${file} =>  ${url}`)
         delete files[file]
         version.setUrl(file, url)

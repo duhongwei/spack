@@ -24,7 +24,6 @@ if (program.folder) {
   config.folder =program.folder
 }
 
-
 const app = new App(config)
 app.build().then(() => {
   if (program.server) {
