@@ -1,5 +1,5 @@
 {
-  "name": "spack",
+  "name": "@duhongwei/spack",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -44,13 +44,14 @@
   "maintainers": [
     {
       "name": "duhongwei",
-      "email": "duhongwei@360.cn"
+      "email": "jack_xxxx@163.com",
+      "website": "https://www.duhongwei.site"
     }
   ],
   "scripts": {
     "test": "eslint ./lib &&eslint ./plugin"
   },
   "keywords": [],
-  "author": "",
+  "author": "duhongwei",
   "license": "MIT"
 }
