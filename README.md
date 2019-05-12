@@ -14,13 +14,18 @@
 ## 快速开始 ##
 如果要在`spack`的基础上做修改首先需要了解`spack`。
 
+spack作为一个非通用个性化打包工具，并没有发布模块，所以需要clone到本地。
+
 ``` bash
-npm install -g @duhongwei/spack
+clone https://github.com/duhongwei/spack.git spack
+sudo npm link
 ```
+执行 `sudo npm link`后，就可以在全局使用 `spack 命令了` 
 clone一个示例项目,然后用`spack`编译
 
 ``` bash
-clone https://github.com/duhongwei/spack-vue-template
+clone https://github.com/duhongwei/spack-vue-template spack-vue
+cd spack-vue
 spack
 ```
 默认以开发方式运行在 `3000` 端口
