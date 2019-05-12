@@ -11,8 +11,9 @@ module.exports = function () {
         continue
       }
       let c = files[file].contents
-      c = c.replace(/\binclude\(['"]?([^)]+['"]?)\)/g, (match, p1) => {
+      c = c.replace(/\binclude\(['"]?([^)'"]+)['"]?\)/g, (match, p1) => {
         let path = null
+       
         if (p1.startsWith('/')) {
           path = join(spack.source(), p1.substr(1))
         }
