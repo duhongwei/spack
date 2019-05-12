@@ -20,7 +20,8 @@ spack作为一个非通用个性化打包工具，并没有发布模块，所以
 clone https://github.com/duhongwei/spack.git spack
 sudo npm link
 ```
-执行 `sudo npm link`后，就可以在全局使用 `spack 命令了` 
+执行 `sudo npm link`后，就可以在全局使用 `spack`  命令了
+
 clone一个示例项目,然后用`spack`编译
 
 ``` bash
