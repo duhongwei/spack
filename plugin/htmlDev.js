@@ -50,12 +50,7 @@ module.exports = function (opts = {}) {
        </script>
        </head>
       `)
-      c = c.replace('</body>',
-        `<script>
-          require('runtime/debug.js').run();
-        </script>
-        </body>`
-      )
+      
       if (opts.file) {
         file = opts.file
       }
