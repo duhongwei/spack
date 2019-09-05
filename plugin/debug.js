@@ -3,7 +3,7 @@ const { isHtml } = require('../lib/util')
 const debug = require('debug')('hotpack/buble')
 module.exports = function () {
   return function (files, { logger }) {
-    logger.log('run debug')
+    logger.log('run plugin debug')
     for (let file in files) {
       if (!isHtml(file)) {
         continue
