@@ -9,18 +9,18 @@ const debug = require('debug')('hotpack/html')
 const debugJson = require('debug')('hotpack-json/html')
 module.exports = function (opts = {}) {
   return function (files, spack, done) {
-    let { dep, runtime, logger, dynamic, getEntry } = spack
+    let { dep, runtime, logger, dynamic, getEntry, socketPort } = spack
     const src = spack.source()
     logger.log('run plugin html')
     for (let file in files) {
       if (!isHtml(file)) {
         continue
       }
-    
+
 
       let entry = getEntry(file)
       if (!existsSync(join(src, entry))) {
-      
+
         debug(`entry ${entry} not exsit, render ${file} directly`)
         continue
       }
@@ -47,16 +47,17 @@ module.exports = function (opts = {}) {
        <script>
          window._dynamic_deps_=${JSON.stringify(dynamicDeps)};
          window._env_='development';
+         window._socketPort_=${socketPort}
        </script>
        </head>
       `)
-      
+
       if (opts.file) {
         file = opts.file
       }
       files[file].contents = c
-      
-     
+
+
       debug(`build ${file}`)
     }
     done()

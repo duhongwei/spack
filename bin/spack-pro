@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-
+const Logger = require('../lib/logger')
+const { makeConfig } = require('../lib/config')
 const program = require('commander')
 const App = require('../lib/app')
 const server = require('../lib/server')
@@ -13,17 +14,20 @@ program
   .option('-f,--folder [folder]', 'config folder')
   .parse(process.argv)
 
-let config = {}
+const logger = new Logger()
+let specialConfig = {
+  logger
+}
 if (program.directory) {
-  config.directory = program.directory
+  specialConfig.directory = program.directory
 }
 if (program.clean) {
-  config.clean = true
+  specialConfig.clean = true
 }
 if (program.folder) {
-  config.folder =program.folder
+  specialConfig.folder = program.folder
 }
-
+const config = makeConfig(specialConfig)
 const app = new App(config)
 app.build().then(() => {
   if (program.server) {

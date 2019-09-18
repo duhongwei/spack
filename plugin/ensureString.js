@@ -6,7 +6,7 @@ module.exports = function () {
     debug('run plugin enstrureString')
     for (let file in files) {
       if (isText(file)) {
-        files[file].contents = files[file].contents.toString('utf8')
+        files[file].contents = files[file].contents.toString('utf8').replace(/\r\n/g,'\n')
       }
     }
   }

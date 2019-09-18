@@ -1,10 +1,8 @@
 define('runtime/import.js', function (system) {
-  var deps = window._dynamic_deps_
+
   var doc = document
-
   function load(key) {
-
-    deps = deps[key]
+    var deps = window._dynamic_deps_[key]
     if (typeof deps !== 'object') {
       return Promise.resolve({ template: '' })
     }
