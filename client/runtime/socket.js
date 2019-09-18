@@ -1,3 +1,4 @@
+// const Logger = require('../../lib/logger')
 require(['lego', 'runtime/debug.js'], function (lego, debug) {
   'use strict';
   function format(tpl) {
@@ -17,7 +18,14 @@ require(['lego', 'runtime/debug.js'], function (lego, debug) {
       var linkNode = document.createElement('link');
       linkNode.rel = 'stylesheet';
       linkNode.href = path + '?t=' + Date.now();
-      document.getElementsByTagName('head')[0].appendChild(linkNode);
+      var links = document.getElementsByTagName('link');
+      var body = document.getElementsByTagName('head')[0]
+      for (let i = 0; i < links.length; i++) {
+        if(links[i].href.indexOf(path)>-1){
+          body.removeChild(links[i])
+        }
+      }
+      body.appendChild(linkNode);
     }
   };
   function deal(filePath) {
