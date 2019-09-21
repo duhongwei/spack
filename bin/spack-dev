@@ -19,7 +19,8 @@ program
 
 const logger = new Logger()
 const specialConfig = {
-  logger
+  logger,
+  env:'dev'
 }
 if (program.watch) {
 
@@ -51,5 +52,5 @@ app.build().then(() => {
 
 if (program.watch) {
 
-  hot.init(app.spack.source(), program.watch, logger)
+  hot.init(app.spack.source(), program.watch, logger,program.folder)
 }

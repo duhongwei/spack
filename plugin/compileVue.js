@@ -13,7 +13,7 @@ function replaceHtml(js, html, logger, file) {
   if (compiled.errors.length > 0) {
     console.log(compiled.errors)
     logger.fatal(`compile vue template ${file} error`)
-    process.exit(1)
+    return false
   }
 
   let ok = `
@@ -23,7 +23,7 @@ function replaceHtml(js, html, logger, file) {
   return js.replace(/__vue__:[^,]{34},/, ok)
 }
 module.exports = function () {
-  return function (files, { logger }) {
+  return function (files, { logger, env }) {
     logger.log('run plugin compileVue')
     for (const file in files) {
       if (!/\.vue\.js$/.test(file)) {
@@ -34,8 +34,19 @@ module.exports = function () {
 
       let jsContent = files[file].contents
 
-      files[file].contents = replaceHtml(jsContent, html, logger, file)
-      //console.log(files[file].contents)
+      let replacedHtml = replaceHtml(jsContent, html, logger, file, env)
+
+      if (replacedHtml) {
+        files[file].contents = replacedHtml
+      }
+      else if (env === 'production') {
+        process.exit(1)
+      }
+      else {
+        //如果是开发环境，忽略这个错误，不处理这个文件
+        delete files[file]
+      }
+
     }
   }
 }

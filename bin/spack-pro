@@ -16,7 +16,8 @@ program
 
 const logger = new Logger()
 let specialConfig = {
-  logger
+  logger,
+  env:'production'
 }
 if (program.directory) {
   specialConfig.directory = program.directory
