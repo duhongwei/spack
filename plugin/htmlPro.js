@@ -32,7 +32,7 @@ function dealPublicPath(publicPath, files, file) {
   if (!publicPath) return
   let f = files[file]
   delete files[file]
-  files[`${publicPath}/file`] = f
+  files[`${publicPath}/${file}`] = f
 }
 module.exports = function () {
 
