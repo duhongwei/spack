@@ -28,16 +28,11 @@ function getCdnDeps({ packagedDeps, version, cdn }) {
     return result
   }, [])
 }
-function dealPublicPath(publicPath, files, file) {
-  if (!publicPath) return
-  let f = files[file]
-  delete files[file]
-  files[`${publicPath}/${file}`] = f
-}
+
 module.exports = function () {
 
   return function (files, spack, done) {
-    let { dep, runtime, logger, version, cdn, dynamic, publicPath } = spack
+    let { dep, runtime, logger, version, cdn, dynamic } = spack
     const src = spack.source()
     logger.log('run plugin html')
 
@@ -95,7 +90,6 @@ module.exports = function () {
           </head>
           `)
       }
-      dealPublicPath(publicPath, files, file)
     }
     done()
   }

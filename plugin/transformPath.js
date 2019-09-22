@@ -13,13 +13,18 @@ function defaultTransformPageKey(key) {
   }
 
   let result = keys.join('/')
- 
+
   return result
 }
-
+function dealPublicPath(publicPath, files, file) {
+  if (!publicPath) return
+  let f = files[file]
+  delete files[file]
+  files[`${publicPath}/${file}`] = f
+}
 module.exports = function ({ transformPageKey = defaultTransformPageKey } = {}) {
 
-  return function (files, { logger }) {
+  return function (files, { logger, publicPath }) {
     logger.log('run plugin transform')
     for (let file in files) {
       if (!isHtml(file)) {
@@ -32,7 +37,8 @@ module.exports = function ({ transformPageKey = defaultTransformPageKey } = {}) 
       if (file !== renderFile) {
         delete files[file]
       }
+      dealPublicPath(publicPath, files, renderFile)
     }
-  
+
   }
 }
