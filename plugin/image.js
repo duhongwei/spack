@@ -1,4 +1,4 @@
-const { isText, isMedia, resolveES6Path } = require('../lib/util')
+const { isText, isMedia, resolveES6Path, image2base64 } = require('../lib/util')
 const { extname, } = require('path')
 const debug = require('debug')('hotpack/image')
 module.exports = function () {
@@ -19,13 +19,21 @@ module.exports = function () {
         delete files[file]
         continue
       }
+      //需要内联处理
+      if (/\image\/inline\//.test(file)) {
 
-      PromiseList.push(cdn.upload(files[file].contents, extname(file), { https: true }).then(url => {
-
-        debug(`upload media ${file}=>${url}`)
+        version.setUrl(file, image2base64(file, files[file].contents))
+        debug(`inline media ${file}`)
         delete files[file]
-        version.setUrl(file, url)
-      }))
+      }
+      else {
+        PromiseList.push(cdn.upload(files[file].contents, extname(file), { https: true }).then(url => {
+
+          debug(`upload media ${file}=>${url}`)
+          delete files[file]
+          version.setUrl(file, url)
+        }))
+      }
     }
     //warring: 如果在路径的名称中有 . 这个正则就失败了，先不考虑这个。非严谨匹配，为了简化
     //匹配 ../../image ../image ./image /image /pages/开头的，.jpg等图片格式结尾的地址,这样式匹配不能匹配所有路径，是一种简化，写码的时候需要遵守一定规则。就是开头提到的 5种写法
@@ -34,12 +42,13 @@ module.exports = function () {
     Promise.all(PromiseList).then(() => {
 
       for (let textFile in textFiles) {
-        // .必须用 \\. 不然无法匹配到 .
+
         //公共的静态资源 在 /image目录中 路径是绝对路径，必须以 /images 开头
         textFiles[textFile].contents = textFiles[textFile].contents.replace(reg, path => {
-          //必须转一下，因为这里的path可能不是绝对路径，但是server.setUrl时File是绝对的。为了一致，而且 只能用绝对，保证不冲突
 
+          //必须转一下，因为这里的path可能不是绝对路径，但是server.setUrl时File是绝对的。为了一致，而且 只能用绝对，保证不冲突
           path = resolveES6Path(textFile, path)
+
           if (!version.has(path)) {
             logger.fatal(`${path} of ${textFile} not exist in version`)
             process.exit(1)
@@ -47,6 +56,7 @@ module.exports = function () {
           debug(`replace img of ${textFile} | ${path} => ${version.get(path).url}`)
           return version.get(path).url
         })
+       
       }
       done()
     })
