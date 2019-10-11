@@ -1,6 +1,6 @@
-const buble = require('buble')
+
 const { isHtml } = require('../lib/util')
-const debug = require('debug')('hotpack/buble')
+
 module.exports = function () {
   return function (files, { logger }) {
     logger.log('run plugin debug')

@@ -20,7 +20,7 @@ module.exports = function () {
         continue
       }
       //需要内联处理
-      if (/\image\/inline\//.test(file)) {
+      if (/image\/inline\//.test(file)) {
 
         version.setUrl(file, image2base64(file, files[file].contents))
         debug(`inline media ${file}`)
