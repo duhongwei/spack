@@ -20,6 +20,8 @@ require(['lego', 'runtime/debug.js'], function (lego, debug) {
       linkNode.href = path + '?t=' + Date.now();
       var links = document.getElementsByTagName('link');
       for (let i = 0; i < links.length; i++) {
+        console.log(path);
+        
         if (links[i].href.indexOf(path) > -1) {
           links[i].parentNode.replaceChild(linkNode, links[i])
           break
@@ -66,7 +68,7 @@ require(['lego', 'runtime/debug.js'], function (lego, debug) {
         return;
       }
       var filePath = data.data;
-      if (!(/\.(js|css|html|htm)$/.test(filePath))) {
+      if (!(/\.(js|css|less|html|htm)$/.test(filePath))) {
         return;
       }
       message = format('[apply]\t{0}\t{1}', filePath, timeString);

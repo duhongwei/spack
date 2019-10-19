@@ -18,7 +18,7 @@ module.exports = function () {
         }
       })
       let info = es6Parser.parse()
-
+      
       let len = info.importInfo.length
       while (len--) {
         let item = info.importInfo[len]
