@@ -19,10 +19,12 @@ module.exports = function () {
         less.render(files[file].contents, {
 
         }, function (error, output) {
-            if (error) {
-            
+          if (error) {
+
             spack.logger.fatal(`error when compile ${file}\n ${error.message}`)
-            process.exit(1)
+            if (spack.env == 'production') {
+              process.exit(1)
+            }
           }
           delete files[file]
 
