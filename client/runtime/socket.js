@@ -20,7 +20,6 @@ require(['lego', 'runtime/debug.js'], function (lego, debug) {
       linkNode.href = path + '?t=' + Date.now();
       var links = document.getElementsByTagName('link');
       for (let i = 0; i < links.length; i++) {
-        console.log(path);
         
         if (links[i].href.indexOf(path) > -1) {
           links[i].parentNode.replaceChild(linkNode, links[i])
