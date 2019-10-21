@@ -67,7 +67,7 @@ require(['lego', 'runtime/debug.js'], function (lego, debug) {
         return;
       }
       var filePath = data.data;
-      if (!(/\.(js|css|less|html|htm)$/.test(filePath))) {
+      if (!(/\.(js|css|html|htm)$/.test(filePath))) {
         return;
       }
       message = format('[apply]\t{0}\t{1}', filePath, timeString);

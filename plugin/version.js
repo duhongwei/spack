@@ -13,12 +13,8 @@ module.exports = function () {
         logger.fatal(`${file} is empty`)
         process.exit(1)
       }
-      let versionKey=file
-      if (isLess(file)) { 
-        //最终不会存在less文件，只有css文件，所以直接存最终的文件名
-        versionKey=file.replace(/\.less$/,'.css')
-      }
-      if (version.update(versionKey, files[file].contents)) {
+      
+      if (version.update(file, files[file].contents)) {
         debug(`${file} updated`)
       }
       else {

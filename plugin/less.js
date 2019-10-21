@@ -8,9 +8,9 @@ const less = require('less')
 
 module.exports = function () {
 
-  return function (files, spack, done) {
+  return function (files, { version, logger }, done) {
     const pList = []
-    spack.logger.log('run plugin less')
+    logger.log('run plugin less')
     for (let file in files) {
       if (!isLess(file)) {
         continue
@@ -21,16 +21,18 @@ module.exports = function () {
         }, function (error, output) {
           if (error) {
 
-            spack.logger.fatal(`error when compile ${file}\n ${error.message}`)
+            logger.fatal(`error when compile ${file}\n ${error.message}`)
             if (spack.env == 'production') {
               process.exit(1)
             }
           }
           delete files[file]
 
-          files[file.replace(/\.less$/, '.css')] = {
+          const newFile = `${file}.css`
+          files[newFile] = {
             contents: output.css
           }
+          version.update(newFile, output.css)
         })
       )
     }
