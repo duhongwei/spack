@@ -5,8 +5,8 @@ const { isJs } = require('../lib/util')
 const debug = require('debug')('hotpack/parser')
 
 module.exports = function () {
-  return function (files, { dep, logger, dynamic }) {
-    logger.log('run plugin parser')
+  return function (files, spack) {
+    spack.logger.log('run plugin parser')
     for (const file in files) {
       if (!isJs(file)) {
         continue
@@ -17,22 +17,37 @@ module.exports = function () {
           return pathToKey(key)
         }
       })
-      let info = es6Parser.parse()
-      
+      let info = null
+      try {
+        info = es6Parser.parse()
+      }
+      catch (error) {
+        //错误到止为止
+        delete files[file]
+        spack.logger.fatal(`error when compile ${file}\n ${error.message}`)
+        if (spack.env == 'production') {
+          process.exit(1)
+        }
+        else {
+
+          continue
+        }
+      }
+
       let len = info.importInfo.length
       while (len--) {
         let item = info.importInfo[len]
 
         if (item.type === 'djs') {
 
-          dynamic.add(pathToKey(item.file))
+          spack.dynamic.add(pathToKey(item.file))
           info.importInfo.splice(len, 1)
         }
       }
       const toAmd = new ToAmd(info, file)
       files[file].contents = toAmd.toString()
 
-      dep.set(file, toAmd.getDeps())
+      spack.dep.set(file, toAmd.getDeps())
     }
   }
 }

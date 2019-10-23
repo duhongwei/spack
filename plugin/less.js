@@ -5,24 +5,25 @@
 
 const { isLess } = require('../lib/util')
 const less = require('less')
-
+const debug = require('debug')('hotpack/less')
 module.exports = function () {
 
-  return function (files, { version, logger }, done) {
+  return function (files, spack, done) {
     const pList = []
-    logger.log('run plugin less')
+   
+    spack.logger.log('run plugin less')
     for (let file in files) {
       if (!isLess(file)) {
         continue
       }
+      debug(`less ${file}`)
       pList.push(
         less.render(files[file].contents, {
 
         }, function (error, output) {
           if (error) {
-
-            logger.fatal(`error when compile ${file}\n ${error.message}`)
-            if (spack.env == 'production') {
+            spack.logger.fatal(`error when compile ${file}\n ${error.message}`)
+            if (env == 'production') {
               process.exit(1)
             }
           }
@@ -32,7 +33,7 @@ module.exports = function () {
           files[newFile] = {
             contents: output.css
           }
-          version.update(newFile, output.css)
+          spack.version.update(newFile, output.css)
         })
       )
     }

@@ -2,8 +2,9 @@ const buble = require('buble')
 const { isJs } = require('../lib/util')
 const debug = require('debug')('hotpack/buble')
 module.exports = function ({ omitFiles = [] } = {}) {
-  return function (files, { logger }, done) {
-    logger.log('run plugin buble')
+  return function (files, spack, done) {
+
+    spack.logger.log('run plugin buble')
     for (let file in files) {
       if (!isJs(file)) {
         continue
@@ -19,15 +20,22 @@ module.exports = function ({ omitFiles = [] } = {}) {
           modules: false
         }
       }
-      //如果是服务端的js 8.0以上就可以了
-      /* if (isServerJs(file)) {
-        opts.target = {
-          "node": 8
+      try {
+        files[file].contents = buble.transform(files[file].contents, opts).code
+      }
+      catch (error) {
+        //错误到止为止
+        delete files[file]
+        spack.logger.fatal(`error when compile ${file}\n ${error.message}`)
+
+        if (spack.env == 'production') {
+
+          process.exit(1)
         }
-      } */
-   
-      files[file].contents = buble.transform(files[file].contents, opts).code
+
+      }
     }
+
     done()
   }
 }
