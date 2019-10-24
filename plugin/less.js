@@ -23,7 +23,7 @@ module.exports = function () {
         }, function (error, output) {
           if (error) {
             spack.logger.fatal(`error when compile ${file}\n ${error.message}`)
-            if (env == 'production') {
+            if (spack.env == 'production') {
               process.exit(1)
             }
           }
