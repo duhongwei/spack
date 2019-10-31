@@ -22,10 +22,10 @@ module.exports = function () {
         //只有在dev时才转换成绝对路径，因为发布时都是cdn地址了
         //如果在发布时也转，会导致key不是以./image开头，导致找不到图片
         if (spack.env === 'dev') {
-          path = resolveES6Path(file, p1)
+          path = `/${resolveES6Path(file, p1)}`  
         }
         debug(`resolvePath ${p1} => ${path} in ${file}`)
-        return `${quote}/${path}${quote}`
+        return `${quote}${path}${quote}`
 
       })
       files[file].contents = c
