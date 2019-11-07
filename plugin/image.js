@@ -45,8 +45,8 @@ module.exports = function () {
 
         //公共的静态资源 在 /image目录中 路径是绝对路径，必须以 /images 开头
         textFiles[textFile].contents = textFiles[textFile].contents.replace(reg, path => {
-
-          //必须转一下，因为这里的path可能不是绝对路径，但是server.setUrl时File是绝对的。为了一致，而且 只能用绝对，保证不冲突
+        
+          //必须转一下，因为这里的path可能不是绝对路径，但是server.setUrl时File是绝对的。为了一致，而且只能用绝对，保证不冲突
           path = resolveES6Path(textFile, path)
 
           if (!version.has(path)) {
