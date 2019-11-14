@@ -3,7 +3,7 @@ define('runtime/import.js', function (system) {
   var doc = document
   function load(key) {
     var deps = window._dynamic_deps_[key]
-    var ik = 0;
+
     if (typeof deps !== 'object') {
       return Promise.resolve({ template: '' })
     }
@@ -23,8 +23,7 @@ define('runtime/import.js', function (system) {
           reject()
         }, 200)
         //得加key，不然会取默认的lastScriptPath,会把readyMod给冲掉
-
-        require('_ik_' + ik++, [key], function (mod) {
+        require('import.r1', [key], function (mod) {
           clearTimeout(t)
           resolve(mod.default)
         });
