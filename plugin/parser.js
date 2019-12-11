@@ -14,7 +14,7 @@ module.exports = function () {
       debug(`parse ${file}`)
       const es6Parser = new parser.Es6(files[file].contents, {
         dynamicImportReplacer: `require('runtime/import.js').load`, dynamicImportKeyConvert: key => {
-          return pathToKey(key)
+          return pathToKey(key, file, spack.source(), files)
         }
       })
       let info = null
@@ -40,10 +40,13 @@ module.exports = function () {
 
         if (item.type === 'djs') {
 
-          spack.dynamic.add(pathToKey(item.file))
+          spack.dynamic.add(pathToKey(item.file, file, spack.source(), files))
           info.importInfo.splice(len, 1)
         }
       }
+      info.sourcePath = spack.source()
+      info.files = files
+      
       const toAmd = new ToAmd(info, file)
       files[file].contents = toAmd.toString()
 

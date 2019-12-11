@@ -9,7 +9,7 @@
     "spack-dev": "bin/spack-dev"
   },
   "dependencies": {
-    "@duhongwei/parser": "2.2.0",
+    "@duhongwei/parser": "2.3.0",
     "autoprefixer": "9.6.4",
     "buble": "0.19.8",
     "chalk": "2.4.1",
@@ -21,6 +21,7 @@
     "koa": "2.8.2",
     "koa-send": "5.0.0",
     "metalsmith": "2.3.0",
+    "typescript": "3.7.2",
     "uglify-es": "3.3.9",
     "vue-template-compiler": "2.6.10",
     "ws": "7.1.2"

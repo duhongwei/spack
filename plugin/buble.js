@@ -21,6 +21,7 @@ module.exports = function ({ omitFiles = [] } = {}) {
         }
       }
       try {
+  
         files[file].contents = buble.transform(files[file].contents, opts).code
       }
       catch (error) {

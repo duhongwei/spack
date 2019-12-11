@@ -19,6 +19,7 @@ module.exports = function () {
       for (const file in parsedVue) {
         debug(`add file ${file}`)
         files[file] = parsedVue[file]
+        
         version.update(file, parsedVue[file].contents)
       }
       delete files[file]

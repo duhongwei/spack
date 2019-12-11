@@ -2,8 +2,11 @@
 const compiler = require('vue-template-compiler')
 const debug = require('debug')('hotpack/vue')
 function getHtml(file, files) {
-  file = file.replace('.js', '.html')
 
+  file = file.replace('.ts.js', '.html').replace('.js', '.html')
+  if (!/\.html$/.test(file)) {
+    throw new Error(`can not find html file of ${file}`)
+  }
   let result = files[file].contents
   delete files[file]
   return result
@@ -20,15 +23,18 @@ function replaceHtml(js, html, logger, file) {
     render:function(){${compiled.render}},
     staticRenderFns:[${compiled.staticRenderFns.map(item => `function(){${item}}`)}],
   `
-  return js.replace(/__vue__:[^,]{34},/, ok)
+
+  return js.replace(/__vue__[^,]+,/, ok)
 }
 module.exports = function () {
   return function (files, { logger, env }) {
     logger.log('run plugin compileVue')
     for (const file in files) {
-      if (!/\.vue\.js$/.test(file)) {
+
+      if (!/\.vue\.js$/.test(file) && !/\.vue\.ts\.js$/.test(file)) {
         continue
       }
+
       debug(`compile vue file ${file}`)
       let html = getHtml(file, files)
 

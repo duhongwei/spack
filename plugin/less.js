@@ -17,10 +17,12 @@ module.exports = function () {
         continue
       }
       debug(`less ${file}`)
+    
       pList.push(
         less.render(files[file].contents, {
 
         }, function (error, output) {
+
           if (error) {
             spack.logger.fatal(`error when compile ${file}\n ${error.message}`)
             if (spack.env == 'production') {
