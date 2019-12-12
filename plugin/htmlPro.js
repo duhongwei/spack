@@ -43,17 +43,21 @@ module.exports = function () {
       }
       debug(`build html ${file}`)
       let entry = getEntry(file)
-      if (!existsSync(join(src, entry))) {
+      let testEntry = entry
+      if (testEntry.endsWith('.ts.js')) {
+        testEntry = testEntry.replace('.js', '')
+      }
+      if (!existsSync(join(src, testEntry))) {
         debug(`entry ${entry} not exsit, render ${file} directly`)
         continue
       }
+
       //保证runtime在最前，这样打包的时候，runtime也会在前面
       let deps = runtime.concat(dep.getByEntry(entry))
       /*  if (dynamic.get().length > 0) {
          deps.push('runtime/import.js')
        } */
       let dynamicDeps = doDynamic(deps, dep, dynamic.get())
-
 
 
       debugJson(`deps are \n${JSON.stringify(deps, null, 2)}`)

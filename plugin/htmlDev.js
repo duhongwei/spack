@@ -9,18 +9,19 @@ const debug = require('debug')('hotpack/html')
 const debugJson = require('debug')('hotpack-json/html')
 module.exports = function (opts = {}) {
   return function (files, spack, done) {
-    let { dep, runtime, logger, dynamic, getEntry, socketPort } = spack
+    let { dep, runtime, logger, dynamic, getEntry, socketPort, version } = spack
     const src = spack.source()
     logger.log('run plugin html')
     for (let file in files) {
       if (!isHtml(file)) {
         continue
       }
-
-
       let entry = getEntry(file)
-      if (!existsSync(join(src, entry))) {
-
+      let testEntry = entry
+      if (testEntry.endsWith('.ts.js')) {
+        testEntry = testEntry.replace('.js', '')
+      }
+      if (!existsSync(join(src, testEntry))) {
         debug(`entry ${entry} not exsit, render ${file} directly`)
         continue
       }
