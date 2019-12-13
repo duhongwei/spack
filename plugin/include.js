@@ -1,5 +1,6 @@
 const debug = require('debug')('hotpack/include')
 const { join, dirname } = require('path')
+const { isText } = require('../lib/util')
 const fs = require('fs')
 module.exports = function () {
 
@@ -7,13 +8,13 @@ module.exports = function () {
 
     spack.logger.log('run plugin include')
     for (let file in files) {
-      if (!/\.html$/.test(file)) {
+      if (!isText(file)) {
         continue
       }
       let c = files[file].contents
       c = c.replace(/\binclude\(['"]?([^)'"]+)['"]?\)/g, (match, p1) => {
         let path = null
-       
+
         if (p1.startsWith('/')) {
           path = join(spack.source(), p1.substr(1))
         }

@@ -5,6 +5,7 @@ module.exports = function () {
   return function (files, spack, done) {
     spack.logger.log('run plugin ts')
     for (let file in files) {
+   
       if (!isTs(file)) {
         continue
       }
@@ -17,6 +18,7 @@ module.exports = function () {
         let newFile = `${file}.js`
 
         files[newFile] = { contents: ts.transpileModule(files[file].contents, opts).outputText }
+     
         delete files[file]
       }
       catch (error) {
