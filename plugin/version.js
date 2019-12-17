@@ -1,12 +1,18 @@
 
 const debug = require('debug')('hotpack/version')
-const { isHtml, isText, isLess } = require('../lib/util')
+const { isHtml, isText } = require('../lib/util')
+const { basename } = require('path')
 module.exports = function () {
   return function (files, spack) {
     spack.logger.log('run plugin version')
 
     for (let file in files) {
       if (isHtml(file)) {
+        continue
+      }
+      //删除隐藏文件。
+      if (/^\./.test(basename(file))) {
+        delete files[file]
         continue
       }
       if (isText(file) && files[file].contents.trim() === '') {
