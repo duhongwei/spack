@@ -352,9 +352,11 @@ jQuery.extend( {
 	},
 
 	// Convert dashed to camelCase; used by the css and data modules
-	// Microsoft forgot to hump their vendor prefix (#9572)
-	camelCase: function( string ) {
-		return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
+  // Microsoft forgot to hump their vendor prefix (#9572)
+  //string 修改为 s,by jack 2019-12-25，不然ie8报错,string为关键字
+	camelCase: function( s ) {
+    //return s.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
+    return s
 	},
 
 	nodeName: function( elem, name ) {
