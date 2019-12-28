@@ -3,7 +3,7 @@ const compiler = require('vue-template-compiler')
 const debug = require('debug')('hotpack/vue')
 function getHtml(file, files) {
 
-  file = file.replace('.ts.js', '.html').replace('.js', '.html')
+  file = file.replace('.js', '.html')
   if (!/\.html$/.test(file)) {
     throw new Error(`can not find html file of ${file}`)
   }

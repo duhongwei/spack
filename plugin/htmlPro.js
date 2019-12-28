@@ -43,14 +43,11 @@ module.exports = function () {
       }
       debug(`build html ${file}`)
       let entry = getEntry(file)
-      let testEntry = entry
-      if (testEntry.endsWith('.ts.js')) {
-        testEntry = testEntry.replace('.js', '')
-      }
-      if (!existsSync(join(src, testEntry))) {
+      
+     /*  if (!existsSync(join(src, testEntry))) {
         debug(`entry ${entry} not exsit, render ${file} directly`)
         continue
-      }
+      } */
 
       //保证runtime在最前，这样打包的时候，runtime也会在前面
       let deps = runtime.concat(dep.getByEntry(entry))

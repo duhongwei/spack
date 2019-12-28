@@ -49,7 +49,7 @@ module.exports = function () {
 
       const toAmd = new ToAmd(info, file)
       files[file].contents = toAmd.toString()
-
+      
       spack.dep.set(file, toAmd.getDeps())
     }
   }

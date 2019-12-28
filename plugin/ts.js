@@ -5,7 +5,7 @@ module.exports = function () {
   return function (files, spack, done) {
     spack.logger.log('run plugin ts')
     for (let file in files) {
-   
+     
       if (!isTs(file)) {
         continue
       }
@@ -15,10 +15,14 @@ module.exports = function () {
         compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ESNext }
       }
       try {
-        let newFile = `${file}.js`
-
-        files[newFile] = { contents: ts.transpileModule(files[file].contents, opts).outputText }
-     
+        let newFile = file.replace(/\.ts$/, '.js')
+        
+        let c = ts.transpileModule(files[file].contents, opts).outputText
+        if (newFile in files) {
+          spack.logger.fatal(`${newFile} exist!`)
+        }
+        files[newFile] = { contents: c }
+        spack.version.update(newFile,c)
         delete files[file]
       }
       catch (error) {

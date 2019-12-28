@@ -18,13 +18,11 @@ module.exports = function (opts = {}) {
       }
       let entry = getEntry(file)
       let testEntry = entry
-      if (testEntry.endsWith('.ts.js')) {
-        testEntry = testEntry.replace('.js', '')
-      }
-      if (!existsSync(join(src, testEntry))) {
+     
+     /*  if (!existsSync(join(src, testEntry))) {
         debug(`entry ${entry} not exsit, render ${file} directly`)
         continue
-      }
+      } */
       let deps = dep.getByEntry(entry)
       let dynamicDeps = doDynamic(deps, dep, dynamic.get())
 
