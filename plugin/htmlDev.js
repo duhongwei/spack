@@ -17,12 +17,11 @@ module.exports = function (opts = {}) {
         continue
       }
       let entry = getEntry(file)
-      let testEntry = entry
-     
-     /*  if (!existsSync(join(src, testEntry))) {
+      
+      if (!version.has(entry)) {
         debug(`entry ${entry} not exsit, render ${file} directly`)
         continue
-      } */
+      } 
       let deps = dep.getByEntry(entry)
       let dynamicDeps = doDynamic(deps, dep, dynamic.get())
 
