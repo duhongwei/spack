@@ -2,6 +2,7 @@ const debug = require('debug')('hotpack/include')
 const { join, dirname } = require('path')
 const { isText } = require('../lib/util')
 const fs = require('fs')
+const compress = require('../lib/compress.js')
 module.exports = function () {
 
   return function (files, spack) {
@@ -22,7 +23,11 @@ module.exports = function () {
           path = join(spack.source(), dirname(file), p1)
         }
         debug(`include ${p1}: ${path} in ${file}`)
-        return fs.readFileSync(path, 'utf8')
+        let c = fs.readFileSync(path, 'utf8')
+        if (spack.env == 'production') {
+           c=compress(path,c)
+        }
+        return c
       })
 
       files[file].contents = c

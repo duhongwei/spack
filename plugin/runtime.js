@@ -3,17 +3,16 @@
 const { join } = require('path')
 const { readFileSync } = require('fs')
 module.exports = function () {
-  return function (files, metalsmith) {
-    const { runtimeFiles, logger} = metalsmith.metadata()
+  return function (files, spack) {
+    const { runtime, logger} = spack
     const srcPath = join(__dirname, '../client')
     logger.log('run plugin runtime')
-    for (let file in runtimeFiles) {
-      const filePath = join(srcPath, runtimeFiles[file])
+    for (let file of runtime) {
+      const filePath = join(srcPath, file)
       files[file] = {
         contents: readFileSync(filePath, 'utf8')
       }
       logger.log(`add runtime ${file}`)
     }
-
   }
 }
