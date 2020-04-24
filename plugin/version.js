@@ -1,6 +1,6 @@
 
 const debug = require('debug')('hotpack/version')
-const { isHtml, isText } = require('../lib/util')
+const {isHtml, isText } = require('../lib/util')
 const { basename } = require('path')
 module.exports = function () {
   return function (files, spack) {
@@ -15,6 +15,7 @@ module.exports = function () {
         delete files[file]
         continue
       }
+      
       if (isText(file) && files[file].contents.trim() === '') {
         spack.logger.fatal(`${file} is empty`)
         if (spack.env == 'production') {

@@ -10,6 +10,7 @@ module.exports = function () {
       }
       let c = files[file].contents
       c = c.replace(/\bresolvePath\(([^)]+)\)/g, (match, p1) => {
+        
         let quote = ''
         if (/['"]/.test(p1[0])) {
           quote = p1[0]
@@ -21,7 +22,8 @@ module.exports = function () {
         let path = p1
         //只有在dev时才转换成绝对路径，因为发布时都是cdn地址了
         //如果在发布时也转，会导致key不是以./image开头，导致找不到图片
-        if (spack.env === 'dev') {
+        if (spack.env === 'development') {
+         
           path = `/${resolveES6Path(file, p1)}`  
         }
         debug(`resolvePath ${p1} => ${path} in ${file}`)

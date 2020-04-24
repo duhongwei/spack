@@ -8,6 +8,7 @@ module.exports = function () {
   return function (files, spack) {
     spack.logger.log('run plugin parser')
     for (const file in files) {
+
       if (!isJs(file)) {
         continue
       }
@@ -49,7 +50,7 @@ module.exports = function () {
 
       const toAmd = new ToAmd(info, file)
       files[file].contents = toAmd.toString()
-      
+
       spack.dep.set(file, toAmd.getDeps())
     }
   }
