@@ -19,8 +19,7 @@ module.exports = function ({ omitFiles = [], transform = {} } = {}) {
         }
       }
       debug(`buble ${file}`)
-
-
+      
       const opts = {
         transforms: Object.assign(transform, {
           modules: false
