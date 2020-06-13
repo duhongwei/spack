@@ -30,7 +30,7 @@ module.exports = function (opts = {}) {
         dynamicDeps[key] = dynamicDeps[key].map(item => `/${item}`)
       }
       debugJson(`dynamicDeps are \n${JSON.stringify(dynamicDeps, null, 2)}`)
-
+    
       deps = runtime.concat(deps)
       /*  if (dynamic.get().length > 0) {
          deps.push('runtime/import.js')

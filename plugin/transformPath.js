@@ -1,9 +1,9 @@
 
 const { isHtml } = require('../lib/util')
 const debug = require('debug')('hotpack/tranformPath')
-
+const {sep} =require('path')
 function defaultTransformPageKey(key) {
-  let keys = key.split('/')
+  let keys = key.split(sep)
   if (keys.length <= 1) {
     return key
   }
@@ -12,7 +12,7 @@ function defaultTransformPageKey(key) {
     keys.splice(keys.length - 2, 1)
   }
 
-  let result = keys.join('/')
+  let result = keys.join(sep)
 
   return result
 }
@@ -33,6 +33,7 @@ module.exports = function ({ transformPageKey = defaultTransformPageKey } = {}) 
 
       let renderFile = transformPageKey(file)
       debug(`transform ${file} => ${renderFile}`)
+ 
       files[renderFile] = files[file]
       if (file !== renderFile) {
         delete files[file]
